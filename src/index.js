@@ -55,31 +55,9 @@ const todoApp = combineReducers({
   todos,
   visibilityFilter
 })
-
-let nextTodoId = 0
-const addTodo = (text) => {
-  return {
-    type: 'ADD_TODO',
-    id: nextTodoId++,
-    text
-  }
-}
-
-const toggleTodo = (id) => {
-  return {
-    type: 'TOGGLE_TODO',
-    id
-  }
-}
-
-const setVisibilityFilter = (filter) => {
-  return {
-    type: 'SET_VISIBILITY_FILTER',
-    filter
-  }
-}
 import todoApp from './reducers'
 import { loadState, saveState } from './localStorage'
+import { addTodo, setVisibilityFilter, toggleTodo } from './actions'
 
 const Link = ({
   active,
