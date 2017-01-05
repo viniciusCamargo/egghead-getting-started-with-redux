@@ -78,6 +78,7 @@ const setVisibilityFilter = (filter) => {
     filter
   }
 }
+import { loadState, saveState } from './localStorage'
 
 const Link = ({
   active,
