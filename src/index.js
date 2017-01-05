@@ -5,6 +5,7 @@ import { createStore } from 'redux'
 import todoApp from './reducers'
 import { loadState, saveState } from './localStorage'
 import { addTodo, setVisibilityFilter, toggleTodo } from './actions'
+import throttle from 'lodash/throttle'
 
 const Link = ({
   active,
@@ -129,6 +130,31 @@ const VisibleTodoList = connect(
   mapDispatchToTodoListProps
 )(TodoList)
 
+const persistedState = loadState()
+
+// const store = createStore(todoApp)
+const store = createStore(
+  todoApp,
+  persistedState, // set a initial state
+  window.__REDUX_DEVTOOLS_EXTENSION__ &&
+  window.__REDUX_DEVTOOLS_EXTENSION__()
+) // to enable redux dev tools
+
+/*
+ * throttle ensures that my inner function won't
+ * be called more often as its second parameter
+ */
+store.subscribe(throttle(() => {
+  saveState({
+    todos: store.getState().todos
+  })
+}, 5000))
+
+console.log(store.getState())
+store.subscribe(() => {
+  console.log(store.getState())
+})
+
 const TodoApp = () => (
   <div>
     <AddTodo />
@@ -137,14 +163,7 @@ const TodoApp = () => (
   </div>
 )
 
-// const store = createStore(todoApp)
-const store = createStore(
-  todoApp,
-  window.__REDUX_DEVTOOLS_EXTENSION__ &&
-  window.__REDUX_DEVTOOLS_EXTENSION__()
-) // to enable redux dev tools
-
-ReactDOM.render(
+render(
   <Provider store={store} >
     <TodoApp />
   </Provider>,
