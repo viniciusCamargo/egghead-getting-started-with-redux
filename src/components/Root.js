@@ -4,9 +4,11 @@ import { Router, Route, browserHistory } from 'react-router'
 import App from './App'
 
 const Root = ({ store }) => (
-  <Provider store={store} >
+  <Provider store={store}>
+    {/* Router must go inside the provider in order to inherit the store */}
     <Router history={browserHistory}>
-      <Route path='/' component={App} />
+      {/* I wrap my parameter in parentheses in order to make them optional */}
+      <Route path='/(:filter)' component={App} />
     </Router>
   </Provider>
 )
